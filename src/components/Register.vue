@@ -1,18 +1,21 @@
 <template>
   <div class="container">
-   <form method="post" action='/users'>
+   <div v-if="!this.$store.state.user.displayName">
+<form @submit.prevent="validateBeforeSubmit" id="register" action="/users" method="post">
     <div class="form-group">
    
       <input type="text" class="form-control" placeholder="Display name" v-model="displayName" name="displayName">
     </div>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Username" v-model="username" name="username">
-    </div>
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Email" v-model="email" name="email">
-    </div>
-
-    <div class="form-group"><div class="question">Question: When you were young, what did you want to be when you grew up?</div>
+    <div class="form-group" :class="{'has-error': errors.has('username') }" >
+          <input v-model="username" name="username" v-validate="'required|alpha|min:4'" data-vv-delay="500" type="text" data-vv-as="username" placeholder="UserName" class="form-control">
+          <p class="text-danger" align="left" v-if="errors.has('username')">{{ errors.first('username') }}</p>
+</div>
+</div>
+    <div class="form-group" :class="{'has-error': errors.has('email') }" >
+          <input v-model="email" name="email" v-validate="'required|email'" data-vv-delay="500" type="text" data-vv-as="email address" placeholder="Email" class="form-control">
+          <p class="text-danger" align="left" v-if="errors.has('email')">{{ errors.first('email') }}</p>
+</div>
+        <div class="form-group"><div class="question">Question: When you were young, what did you want to be when you grew up?</div>
       <input type="text" class="form-control" placeholder="Answer" v-model="question1" name="question1">
     </div>
     <div class="form-group"><div class="question">Question: Who was your childhood hero?</div>
@@ -70,6 +73,18 @@ export default {
       }
       this.$store.dispatch('register', newUser)
     }
-  }
+  },
+ methods: {
+    validateBeforeSubmit(e) {
+        this.$validator.validateAll();
+        if (!this.errors.any()) {
+            this.submitForm()
+        }
+      },
+    submitForm(){
+      this.formSubmitted = true
+    }
+  } 
+
 }
 </script>
