@@ -105,7 +105,9 @@ module.exports = (() => {
           if (err) {
               throw err
           }
-          res.json({ message: 'User registered successfully.' })
+         res.json({ message: 'User registered successfully.' })
+       // req.flash('success_msg','User registered successfully.');
+       //res.redirect('/login');
         })
       
     })
