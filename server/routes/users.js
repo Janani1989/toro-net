@@ -1,18 +1,11 @@
-<<<<<<< HEAD
   const express = require('express'),
         flash = require('req-flash'),
       User = require('../models/user')
         
-=======
-const express = require('express'),
-      User = require('../models/user'),
-      bcrypt = require('bcryptjs')
->>>>>>> 2db63b24b81a3019a4e03a2c100d9170107c4043
 
 module.exports = (() => {
     'use strict'
 
-<<<<<<< HEAD
     const router = express.Router();
    
     /* User listing endpoint */
@@ -87,20 +80,66 @@ module.exports = (() => {
         
         console.log("newUser created");
 
-        // Attempt to create the new user in the database.
+        // Attempt to create the new user in the database. 
         User.create(newUser, (err) => {
           console.log(newUser)
           if (err) {
               throw err
           }
+<<<<<<< HEAD
           res.status(200).send();
           //res.locals.messages= req.flash();
           //res.redirect('/login');
           //res.json({ message: 'User registered successfully.' })
+=======
+<<<<<<< HEAD
+          req.flash('successMessage', 'User registered successfully.');
+          //res.locals.messages= req.flash();
+          //res.redirect('/login');
+          res.json({ message: 'User registered successfully.' })
+=======
+         res.json({ message: 'User registered successfully.' })
+       // req.flash('success_msg','User registered successfully.');
+       //res.redirect('/login');
+>>>>>>> 107151ef11e16c632e444cc99094cdc25c087874
+>>>>>>> 432585c9e40e23b5f1013821e77b51765c1466df
         })
       }
     })
     })
+
+    /*endpoint of read a single user- by Jieli*/
+    router.get('/user_id',(req,res)=> {
+      User.find({email:req.body.email},(err,user)=> {
+        if (err) {
+           throw err
+           console.log("User not exists!")
+           res.json(message,'User not exists!')
+           res.status(204).send();
+        }
+        else {
+          res.send(JSON.stringify(user))
+          res.status(302).send();
+        }
+      })
+
+    });
+
+    /*endpoint of delete a single user - by jieli*/ 
+    router.delete('delete/user_id',(req,res)=> {
+      User.findByIdAndRemove({email:req.body.email},(err,user)=> {
+        if (err) {
+          throw err
+          res.status(204).send()
+          res.json(message,'no user record');
+        } else {
+          res.status(200).send()
+          res.send(JSON.stringify(user))
+          res.json(message,'success');
+        }
+      })
+    });
+
     router.post('/reset', function(req, res){
       var password = req.body.password;
       var password2 = req.body.password2;
@@ -119,60 +158,6 @@ module.exports = (() => {
               
           }
       });
-=======
-    const router = express.Router()
-
-    /* User registration API endpoint */
-    router.post('/register', (req, res) => {
-      /* Vee-validate already takes care of frontend validation, including:
-       * - All fields are present
-       * - Password and password confirmation fields match
-       * - Email field has a valid email address format
-       * - Username contains only letters and numbers, no spaces or symbols
-       * - Display name contains only letters and numbers, no spaces or symbols
-       */
-      
-      /* Hash User password first and then create User object to store in DB on 
-       * hash success */
-      bcrypt.hash(req.body.password, 10, function(err, hash) {
-        if (err) {
-          res.status(409).send()
-        }
-        else {
-          const newUser = new User({
-            displayName: req.body.displayName,
-            email: req.body.email,
-            username: req.body.username,
-            password: hash, // Hash, not plain!
-            createdOn: new Date
-          })
-
-          User.create(newUser, (err) => {
-            if (err) {
-              if (err.name === 'MongoError' && err.code === 11000) {
-                //search error message body for error source = 'email' or 'username'
-                if (err.message.search('username') != '-1') {
-                  res.statusMessage = 'username'
-                  return res.status(409).send()
-                }
-                else if (err.message.search('email') != '-1') {
-                  res.statusMessage = 'email'
-                  return res.status(409).send()
-                }  
-              }
-              
-              /* Error message not displayed by default, included this to make stack trace 
-               * more descriptive */
-              console.log(err.message)
-              throw err
-            }
-    
-            res.status(200).send()
-          })
-        }
-      })
-  })
->>>>>>> 2db63b24b81a3019a4e03a2c100d9170107c4043
 
     return router;
 })()

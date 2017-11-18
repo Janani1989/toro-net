@@ -59,6 +59,7 @@ router.post('/local',
 router.get('/github/callback', 
   passport.authenticate('github', { failureRedirect: '/login' }), 
   function(req, res) {
+<<<<<<< HEAD
     res.redirect('/counter')
   })
 
@@ -68,7 +69,36 @@ router.post('/local',
 >>>>>>> 2db63b24b81a3019a4e03a2c100d9170107c4043
   function(req, res) {
     res.redirect('/counter')
+=======
+    req.flash('success_msg','login success!');
+    res.redirect('/');
+   
+>>>>>>> 069fb63aa0e762c43c5ffa721f3b90f878f9a184
   })
+
+
+  //   password/email validation check         
+  passport.use(new LocalStrategy(
+    function(email, password, done) {
+     User.getUserByEmail(email, function(err, user){
+         if(err) throw err;
+         if(!user){
+             return done(null, false, {message: 'Unknown Email'});
+         }
+  
+         User.comparePassword(password, user.password, function(err, isMatch){
+             if(err) throw err;
+             if(isMatch){
+                 return done(null, user);
+             } else {
+                 return done(null, false, {message: 'Invalid password'});
+             }
+          });
+          });
+      }));
+
+
+  /*forget password */
 
   router.post('/forgot', function(req, res){
     var email = req.body.email;
