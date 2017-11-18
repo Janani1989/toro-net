@@ -93,10 +93,23 @@ module.exports = (() => {
           if (err) {
               throw err
           }
+<<<<<<< HEAD
           res.status(200).send();
           //res.locals.messages= req.flash();
           //res.redirect('/login');
           //res.json({ message: 'User registered successfully.' })
+=======
+<<<<<<< HEAD
+          req.flash('successMessage', 'User registered successfully.');
+          //res.locals.messages= req.flash();
+          //res.redirect('/login');
+          res.json({ message: 'User registered successfully.' })
+=======
+         res.json({ message: 'User registered successfully.' })
+       // req.flash('success_msg','User registered successfully.');
+       //res.redirect('/login');
+>>>>>>> 107151ef11e16c632e444cc99094cdc25c087874
+>>>>>>> 432585c9e40e23b5f1013821e77b51765c1466df
         })
       }
     })
