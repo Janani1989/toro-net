@@ -94,6 +94,39 @@ module.exports = (() => {
       }
     })
     })
+    
+    /*endpoint of read a single user- by Jieli*/
+    router.get('/:id',(req,res)=> {
+      User.findOne({_id: req.body.id},(err,user)=> {
+        console.log('Endpoint: Read a user')
+        if (err) throw err;
+        else {
+          res.send(JSON.stringify(user));
+          //res.send(JSON.stringify(username))
+          console.log('read a user success')
+          //res.status(304).send()
+          //res.json({message: 'user found'});
+        }
+      })
+
+    });
+
+    /*endpoint of delete a single user -by jieli*/ 
+    router.get('/delete/:id', (req, res) => {
+      User.remove(User.findById(req.body.id), (err,user) => {
+          console.log('Endpoint: Delete a user')
+              if(err){
+                console.log('Error in delete a user');
+                res.status(204).send();
+              }
+              else {
+                console.log('delete a user success'); 
+                res.status(200).send();
+                
+              }
+      })
+    });//End of Endpoint
+    
     router.post('/reset', function(req, res){
       var password = req.body.password;
       var password2 = req.body.password2;
