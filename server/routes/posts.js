@@ -15,7 +15,7 @@ module.exports = (() => {
     const postProjection = {
       __v: false,
       _id: false
-    }
+    } 
 
     router.get('/', (req, res) => {
       Post.find({}, (err, posts) => {
