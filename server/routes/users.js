@@ -80,20 +80,100 @@ module.exports = (() => {
         
         console.log("newUser created");
 
-        // Attempt to create the new user in the database.
+        // Attempt to create the new user in the database. 
         User.create(newUser, (err) => {
           console.log(newUser)
           if (err) {
               throw err
           }
+<<<<<<< HEAD
           res.status(200).send();
           //res.locals.messages= req.flash();
           //res.redirect('/login');
           //res.json({ message: 'User registered successfully.' })
+=======
+<<<<<<< HEAD
+          req.flash('successMessage', 'User registered successfully.');
+          //res.locals.messages= req.flash();
+          //res.redirect('/login');
+          res.json({ message: 'User registered successfully.' })
+=======
+         res.json({ message: 'User registered successfully.' })
+       // req.flash('success_msg','User registered successfully.');
+       //res.redirect('/login');
+>>>>>>> 107151ef11e16c632e444cc99094cdc25c087874
+>>>>>>> 432585c9e40e23b5f1013821e77b51765c1466df
         })
       }
     })
     })
+<<<<<<< HEAD
+    
+    /*endpoint of read a single user- by Jieli*/
+    router.get('/:id',(req,res)=> {
+      User.findOne({_id: req.body.id},(err,user)=> {
+        console.log('Endpoint: Read a user')
+        if (err) throw err;
+        else {
+          res.send(JSON.stringify(user));
+          //res.send(JSON.stringify(username))
+          console.log('read a user success')
+          //res.status(304).send()
+          //res.json({message: 'user found'});
+=======
+
+    /*endpoint of read a single user- by Jieli*/
+    router.get('/user_id',(req,res)=> {
+      User.find({email:req.body.email},(err,user)=> {
+        if (err) {
+           throw err
+           console.log("User not exists!")
+           res.json(message,'User not exists!')
+           res.status(204).send();
+        }
+        else {
+          res.send(JSON.stringify(user))
+          res.status(302).send();
+>>>>>>> 6e7d3b55a9d2273fc3d692415051c9dd6be6109a
+        }
+      })
+
+    });
+
+<<<<<<< HEAD
+    /*endpoint of delete a single user -by jieli*/ 
+    router.get('/delete/:id', (req, res) => {
+      User.remove(User.findById(req.body.id), (err,user) => {
+          console.log('Endpoint: Delete a user')
+              if(err){
+                console.log('Error in delete a user');
+                res.status(204).send();
+              }
+              else {
+                console.log('delete a user success'); 
+                res.status(200).send();
+                
+              }
+      })
+    });//End of Endpoint
+    
+=======
+    /*endpoint of delete a single user - by jieli*/ 
+    router.delete('delete/user_id',(req,res)=> {
+      User.findByIdAndRemove({email:req.body.email},(err,user)=> {
+        if (err) {
+          throw err
+          res.status(204).send()
+          res.json(message,'no user record');
+        } else {
+          res.status(200).send()
+          res.send(JSON.stringify(user))
+          res.json(message,'success');
+        }
+      })
+    });
+
+>>>>>>> 6e7d3b55a9d2273fc3d692415051c9dd6be6109a
     router.post('/reset', function(req, res){
       var password = req.body.password;
       var password2 = req.body.password2;
