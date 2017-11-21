@@ -55,25 +55,23 @@ router.get('/github/callback',
 router.post('/local',
   passport.authenticate('local', { failureRedirect: '/login' , successRedirect: '/' }),
   function(req, res) {
-<<<<<<< HEAD
+
     res.redirect('/')
-=======
-<<<<<<< HEAD
+
     res.redirect('/counter')
   })
 
 /* Email/password */
 router.post('/local', 
   passport.authenticate('local', { failureRedirect: '/login' }), 
->>>>>>> 2db63b24b81a3019a4e03a2c100d9170107c4043
+
   function(req, res) {
     res.redirect('/counter')
-=======
+
     req.flash('success_msg','login success!');
     res.redirect('/');
    
->>>>>>> 069fb63aa0e762c43c5ffa721f3b90f878f9a184
->>>>>>> d2433f7e400d79cb6984fdd9dbcbda57afe1988a
+
   })
 
 
