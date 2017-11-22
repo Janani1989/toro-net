@@ -97,23 +97,26 @@ User.create(newUser, (err) => {
 
 /*endpoint of read a single user- by Jieli*/
 router.get('/:id',(req,res)=> {
-User.findOne({_id: req.body.id},(err,user)=> {
+User.find(User.findById(req.params.id),(err,user)=> {
 console.log('Endpoint: Read a user')
-if (err) throw err;
+//console.log(req.params.id);
+console.log(user);
+if (err) {
+  console.log("User not fount");
+}
 else {
   res.send(JSON.stringify(user));
-  //res.send(JSON.stringify(username))
-  console.log('read a user success')
+  console.log('read a user success');
+  //console.log(user);
   //res.status(304).send()
   //res.json({message: 'user found'});
 }
 })
-
 });
 
 /*endpoint of delete a single user -by jieli*/ 
 router.get('/delete/:id', (req, res) => {
-User.remove(User.findById(req.body.id), (err,user) => {
+User.remove(User.findById(req.params.id), (err,user) => {
   console.log('Endpoint: Delete a user')
       if(err){
         console.log('Error in delete a user');
@@ -122,7 +125,6 @@ User.remove(User.findById(req.body.id), (err,user) => {
       else {
         console.log('delete a user success'); 
         res.status(200).send();
-        
       }
 })
 });//End of Endpoint
