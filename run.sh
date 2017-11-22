@@ -26,3 +26,14 @@ curl -d "user=test4@aol.com&title=Post006&body=sixthexamcsc501finalexam" -X POST
 curl http://localhost:3000/posts/list/exam
 
 
+
+# delete a user #
+# frist create a user
+curl -d "displayName=test111&email=test111@aol.com&userName=test111user@password=Password111$&question1=1&question2=11&question3=111" -X POST http://localhost:3000/users/register
+curl -d "displayName=test222&email=test222@aol.com&userName=test222user@password=Password222$&question1=2&question2=22&question3=222" -X POST http://localhost:3000/users/register
+curl http://localhost:3000/users/delete/5a126c7393770c43532a476d
+
+# read a user #
+curl http://localhost:3000/users/5a126bd993770c43532a476c
+
+
