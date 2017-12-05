@@ -24,65 +24,6 @@ User.find({}, function(err,users){
 })
 })
 
-<<<<<<< HEAD
-    /* User registration API endpoint */
-    router.post('/register', (req, res) => {
-      // Confirm passwords match.
-      
-     /* if (req.body.password !== req.body.passwordConf) {
-        const err = new Error('Passwords do not match!')
-        err.status = 400
-        throw err
-      }*/
-
-      // If user already exists...
-      User.find({email : req.body.email}, function(err, docs)  {
-        
-        if(docs.length){
-          const err = new Error('User already exists!')
-          err.status = 400
-          res.json({ message: 'User already exists!' })
-          
-          //res.locals.messages=req.flash()
-          //res.render('register',{title: "Register"});
-        }
-     else{
-
-        const newUser = new User({
-          displayName: req.body.displayName,
-          email: req.body.email,
-          username: req.body.username,
-          password: req.body.password,
-          question1: req.body.question1,
-          question2: req.body.question2,
-          question3: req.body.question3,
-          createdOn: new Date
-        })
-
-        
-        
-        console.log("newUser created");
-
-        // Attempt to create the new user in the database.
-        User.create(newUser, (err) => {
-          console.log(newUser)
-          if (err) {
-              throw err
-          }
-          res.status(200).send();
-          //res.locals.messages= req.flash();
-          //res.redirect('/login');
-          //res.json({ message: 'User registered successfully.' })
-        })
-      }
-    })
-    })
-
-/*Reset password for a user*/
-    router.post('/reset', function(req, res){
-      var password = req.body.password;
-      var password2 = req.body.password2;
-=======
 
 /*endpoint to provide partial list of useres based on keyword search*/
 router.get('/list/:keyword', (req,res) => {
@@ -118,7 +59,6 @@ if(docs.length){
   const err = new Error('User already exists!')
   err.status = 400
   res.json({ message: 'User already exists!' })
->>>>>>> f4778db7ed17e806e5f0f2ac19a685be8bcdbcbd
   
   //res.locals.messages=req.flash()
   //res.render('register',{title: "Register"});
@@ -155,40 +95,7 @@ User.create(newUser, (err) => {
 })
 })
 
-/*endpoint of read a single user- by Jieli*/
-router.get('/:id',(req,res)=> {
-User.find(User.findById(req.params.id),(err,user)=> {
-console.log('Endpoint: Read a user')
-//console.log(req.params.id);
-console.log(user);
-if (err) {
-  console.log("User not fount");
-}
-else {
-  res.send(JSON.stringify(user));
-  console.log('read a user success');
-  //console.log(user);
-  //res.status(304).send()
-  //res.json({message: 'user found'});
-}
-})
-});
-
-/*endpoint of delete a single user -by jieli*/ 
-router.get('/delete/:id', (req, res) => {
-User.remove(User.findById(req.params.id), (err,user) => {
-  console.log('Endpoint: Delete a user')
-      if(err){
-        console.log('Error in delete a user');
-        res.status(204).send();
-      }
-      else {
-        console.log('delete a user success'); 
-        res.status(200).send();
-      }
-})
-});//End of Endpoint
-
+/*Reset password for a user*/
 router.post('/reset', function(req, res){
 var password = req.body.password;
 var password2 = req.body.password2;
@@ -202,75 +109,70 @@ var errors = req.validationErrors();
       res.render('login',{
           errors:errors
       });
-
-<<<<<<< HEAD
-      // update single user
-=======
   } else {
       res.redirect('/login');
       
   }
 });
 
-return router;
-})();
-
-      // update user
->>>>>>> f4778db7ed17e806e5f0f2ac19a685be8bcdbcbd
+// update single user
 router.put('/update/:id', (req, res, next) => {
   console.log("Endpoint: update user");  
-  User.update(User.findById(req.params.id) , req.body, (err, result) => {        
-// if the user is not in the database
-  if (err) {
-    console.log("User record doesn't exist!")
-    res.status(204).send();
-  }      
-     // if the user is found
-  else{
-
+    User.update(User.findById(req.params.id) , req.body, (err, result) => {        
+      // if the user is not in the database
+      if (err) {
+        console.log("User record doesn't exist!")
+        res.status(204).send();
+      }      
+      // if the user is found
+      else {
+      
       // update the  user in the database is done.
-    console.log("success");
-    res.status(200).send();
-  }
-})
-})  
+        console.log("success");
+        res.status(200).send();
+      }
+    })
+    }) 
 
 /*endpoint of read a single user*/
 router.get('/:id',(req,res)=> {
-User.find(User.findById(req.params.id),(err,user)=> {
-console.log('Endpoint: Read a user')
-//console.log(req.params.id);
-console.log(user);
-if (err) {
-  console.log("User not fount");
-}
-else {
-  res.send(JSON.stringify(user));
-  console.log('read a user success');
-  //console.log(user);
-  //res.status(304).send()
-  //res.json({message: 'user found'});
-}
-})
-});
+  User.find(User.findById(req.params.id),(err,user)=> {
+  console.log('Endpoint: Read a user')
+  //console.log(req.params.id);
+  console.log(user);
+  if (err) {
+    console.log("User not fount");
+  }
+  else {
+    res.send(JSON.stringify(user));
+    console.log('read a user success');
+    //console.log(user);
+    //res.status(304).send()
+    //res.json({message: 'user found'});
+  }
+  })
+  });
 
-/*endpoint of delete a single user*/ 
+  /*endpoint of delete a single user*/ 
 router.get('/delete/:id', (req, res) => {
-User.remove(User.findById(req.params.id), (err,user) => {
-  console.log('Endpoint: Delete a user')
-      if(err){
-        console.log('Error in delete a user');
-        res.status(204).send();
-      }
-      else {
-        console.log('delete a user success'); 
-        res.status(200).send();
-      }
-})
-});//End of Endpoint
+  User.remove(User.findById(req.params.id), (err,user) => {
+    console.log('Endpoint: Delete a user')
+        if(err){
+          console.log('Error in delete a user');
+          res.status(204).send();
+        }
+        else {
+          console.log('delete a user success'); 
+          res.status(200).send();
+        }
+  })
+  });//End of Endpoint
 
 
-
-    return router;
+  
+return router;
 })();
+
+ 
+
 
