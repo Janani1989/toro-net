@@ -10,7 +10,7 @@
       <p class="text-danger" align="left" v-if="errors.has('title')">{{ errors.first('title') }}</p>
     </div>
     <div class="form-group">
-      <textarea v-model="body" class="form-control" id="body" rows="5"  name="body" placeholder="Write your thoughts here..." data-vv-as="body"  data-vv-delay="500" v-validate="'required'">
+      <textarea v-model="body" class="form-control" id="body" rows="5"  name="body" :placeholder="this.$store.state.user.displayName" data-vv-as="body"  data-vv-delay="500" v-validate="'required'">
       </textarea>
       <p class="text-danger" align="left" v-if="errors.has('body')">{{ errors.first('body') }}</p>
     </div class="form-group" >
@@ -19,35 +19,28 @@
        <button class="btn btn-primary" type="submit" >Post!</button>
     </form>
     <hr>
-
     <center>
-
-     <!-- 
-   <table class="table table-striped table-borderes">
-   <thead>
-   <tr>
-     <th> title </th>
-     <th> body </th>
-     <th> Post Date </th>
-   </tr>
-   </thead>
-   <div v-for="posts_alias in list">
-   <tr >    
-     <span v-text="posts_alias.title"   ></span>
-     <span v-text="posts_alias.body"   ></span>
-     <span v-text="posts_alias.createdOn"   ></span>   
- 
-     </tr>   
-
-   </div >   
-        <infinite-loading @infinite="infiniteHandler"  ></infinite-loading>
-
-   </table>     
-  -->
 
     <div class="columns">
       <postcard></postcard>
       <h3>My Feed</h3>
+
+      <!-- <div v-if="this.$store.state.posts.length>1">  -->
+        <div v-if="this.posts2.length>0">
+          <div v-for="posts3 in posts2">
+                <div  class="container2">
+                <div class="content">
+                  <div class="title1"> {{posts3.title}}</div>
+                  {{posts3.body}}
+                  </div>
+                  <div>
+                    <div class="postedBy">Posted by: {{posts3.userId}}</div>
+                    <div class="postedOn"> - {{posts3.createdOn}}</div>
+                  </div>
+                </div>
+                <br>
+          </div>
+      </div>
 
       <div v-for="post in list">
         <div  class="container2">
@@ -63,17 +56,16 @@
         <br>
       </div>  
 <p>-- END FEED --</p>
-
-     <infinite-loading @infinite="infiniteHandler"  ></infinite-loading>
+<infinite-loading @infinite="infiniteHandler" ></infinite-loading>
 
   </div> <!-- div -->
-  <div class="container" v-else>
 
+  <div class="container" v-else>
     <h4>You must login to access Toro Net!</h4>
     <img src="https://qph.ec.quoracdn.net/main-qimg-0102f6e770d2ce1f45bd7066524b8f70" alt="Avatar" style="width:20% height=20%" class="w3-circle w3-margin-top">
-  </div>
-  
+  </div>  
 </template>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
@@ -114,7 +106,9 @@ export default {
       //title: "",
       //body: ".",
       posts: [],
-      list: []
+      list: [],
+      posts2: [],
+      posts2Master:[],
     };
   },  
   methods: {
@@ -123,7 +117,7 @@ export default {
         const temp = [];
         //counter =0;        
         //if(this.posts.length>this.list.length){
-          for (let i = this.list.length + 1; i <= this.list.length + 20; ) {
+          for (let i = this.list.length + 1; i <= this.list.length + 2; ) {
       //for (let i = counter; i <= this.posts.length + 2; i++) {          
           if(i>this.posts.length){
             break;
@@ -137,7 +131,7 @@ export default {
         $state.loaded();
 
        // }
-         }, 1000);       
+         }, 3000);       
     },    
     Validate(e) {
       e.preventDefault();
@@ -149,6 +143,10 @@ export default {
             body: this.body,
             createdOn: new Date()
           };
+          this.posts2Master=this.posts2Master.concat(newPost);
+          this.posts2=this.posts2Master.reverse();
+          //this.posts2=this.posts2.reverse();
+          //this.list=[];
           console.log(newPost);          
           this.$store.dispatch("addPost", newPost);
           this.title="";
@@ -164,7 +162,7 @@ export default {
   },
   
   mounted() {
-    axios.get('http://toritos.tk/posts')
+    axios.get('/posts')
       .then((response) => {
       console.log(response.data);
       this.posts = response.data;
@@ -176,7 +174,7 @@ export default {
   },  
 
   updated(){
-    axios.get('http://toritos.tk/posts')
+    axios.get('/posts')
       .then((response) => {
       console.log(response.data);
       this.posts = response.data;
